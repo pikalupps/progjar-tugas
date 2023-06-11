@@ -1,0 +1,40 @@
+import socket
+import logging
+import time
+from concurrent.futures import ThreadPoolExecutor
+
+def send_data(count):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    logging.warning("membuka socket")
+
+    server_address = ('172.16.16.101', 45000)
+    logging.warning(f"opening socket {server_address}")
+    sock.connect(server_address)
+
+    try:
+        message = 'TIME \r\n'
+        sock.sendall(message.encode())
+        amount_recv = 0
+        amount_exp = len(message)
+        while amount_recv < amount_exp:
+            data = sock.recv(16)
+            amount_recv += len(data)
+            logging.warning(f"[DITERIMA DARI SERVER] {data}")
+            logging.warning(f"REQ KE : {count}")
+    finally:
+        logging.warning("closing")
+        sock.close()
+    return
+
+
+if __name__=='__main__':
+
+    count = 0
+    start_time = time.perf_counter()
+    with ThreadPoolExecutor() as executor:
+        for i in range(0, 100000):
+            count = count + 1
+            executor.submit(send_data(count))
+    finish_time = time.perf_counter()
+    finish = round(finish_time - start_time,3)
+    print(f"Total waktu yang dibutuhkan sebesar {finish} detik")
