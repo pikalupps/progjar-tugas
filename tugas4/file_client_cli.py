@@ -78,3 +78,7 @@ def remote_upload(file_path="", file_name=""):
 
 if __name__ == '__main__':
     server_address = ('0.0.0.0', 6666)
+    #remote_list()
+    #remote_upload('/home/dhika/progjar-tugas/progjar4/iu.jpg', 'iu.jpg')
+    #remote_list()
+    #remote_delete('/home/dhika/progjar-tugas/progjar4/iu.jpg')
