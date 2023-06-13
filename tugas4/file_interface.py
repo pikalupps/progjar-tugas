@@ -37,7 +37,7 @@ class FileInterface:
                 file_contents = base64.b64decode(base64.b64encode(f.read()))
             dest_f = open(file_name, 'wb')
             dest_f.write(file_contents)
-            return dict(status='OK', data_file=file_name, message="file berhasil diupload")
+            return dict(status='OK', data_file=file_name, message="File telah diupload!")
         except Exception as e:
             print(e)
             return dict(status='ERROR', data=str(e))
@@ -49,9 +49,9 @@ class FileInterface:
                 return None
             if os.path.exists(file_path):
                 os.remove(file_path)
-                return dict(status='OK', data_file=file_path, message="file berhasil dihapus")
+                return dict(status='OK', data_file=file_path, message="File telah dihapus!")
             else:
-                return dict(status='OK', data_file=file_path, message="file tidak ada")
+                return dict(status='OK', data_file=file_path, message="File tidak ditemukan!")
         except Exception as e:
             print(e)
             return dict(status='ERROR', data=str(e))

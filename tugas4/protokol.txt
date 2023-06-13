@@ -38,8 +38,9 @@ GET
 - GAGAL:
   - status: ERROR
   - data: pesan kesalahan
-SEND
-* TUJUAN: untuk mengirim isi file dengan menyebutkan path file dan nama file dalam parameter
+
+  UPLOAD
+* TUJUAN: untuk mengupload isi file dengan menyebutkan path file dan nama file dalam parameter
 * PARAMETER:
   - PARAMETER1 : path file
   - PARAMETER2 : nama file
