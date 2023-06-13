@@ -14,7 +14,7 @@ def send_command(command_str=""):
     try:
         logging.warning(f"sending message ")
         sock.sendall(command_str.encode())
-        data_received = "" 
+        data_received = ""
         while True:
             data = sock.recv(16)
             if data:
@@ -58,9 +58,8 @@ def remote_get(filename=""):
         print("Gagal")
         return False
 
-
-def remote_send(file_path="", file_name=""):
-    command_str = f"SEND {file_path} {file_name}"
+def remote_delete(file_path):
+    command_str = f"delete {file_path}"
     hasil = send_command(command_str)
     if (hasil['status'] == 'OK'):
         return True
@@ -68,8 +67,8 @@ def remote_send(file_path="", file_name=""):
         print("Gagal")
         return False
 
-def remote_delete(file_path):
-    command_str = f"delete {file_path}"
+def remote_upload(file_path="", file_name=""):
+    command_str = f"UPLOAD {file_path} {file_name}"
     hasil = send_command(command_str)
     if (hasil['status'] == 'OK'):
         return True
