@@ -1,0 +1,179 @@
+CHAT SERVER
+TUJUAN: melayani client dalam mengirimkan chat untuk client lain dalam sebuah realm dan antar realm 
+
+ATURAN PROTOKOL:
+- client harus mengirimkan request dalam bentuk string
+- string harus dalam format
+  REQUEST spasi PARAMETER
+- PARAMETER dapat berkembang menjadi PARAMETER1 spasi PARAMETER2 dan seterusnya
+- Hasil akhir request ditandai dengan character ascii code #13#10#13#10 atau "\r\n\r\n" atau dua CRLF
+
+REQUEST YANG DILAYANI:
+- informasi umum:
+  * Jika request tidak dikenali akan menghasilkan pesan
+    - status: ERROR
+    - message: pesan error
+  * Semua result akan diberikan dalam bentuk JSON dan diakhiri
+    dengan character ascii code #13#10#13#10 atau "\r\n\r\n"
+
+AUTH
+* TUJUAN: untuk login dan mendapatkan token session yang akan digunakan sebagai autentikasi
+* FORMAT: auth username password
+* PARAMETER:
+  - username : nama akun
+  - password : password akun
+* RESULT:
+- BERHASIL:
+  - status: OK
+  - tokenid : id dari session
+- GAGAL:
+  - status: ERROR
+  - message: pesan kesalahan
+
+REGISTER
+* TUJUAN: untuk membuat akun
+* FORMAT: register nama negara username password
+* PARAMETER:
+    - nama : nama pembuat akun
+    - negara : asal pembuat akun
+    - username : nama dari akun
+    - password : password dari akun
+* RESULT:
+- BERHASIL:
+  - status: OK
+  - tokenid : id dari session
+- GAGAL:
+  - status: ERROR
+  - message: pesan kesalahan
+
+PRIVATE CHAT
+* TUJUAN: untuk mengirim chat
+* FORMAT: send sessionid username_to message
+* PARAMETER:
+  - sessionid: token autentikasi dari request AUTH
+  - username_to: username tujuan chat
+  - message: pesan yang dikirimkan
+* RESULT:
+- BERHASIL:
+  - status: OK
+- GAGAL:
+  - status: ERROR
+  - message: pesan kesalahan
+
+INBOX PRIVATE CHAT
+* TUJUAN: untuk mengambil pesan-pesan pribadi yang diterima oleh pengguna
+* FORMAT: inbox sessionid
+* PARAMETER:
+  - sessionid: token autentikasi dari request AUTH
+* RESULT:
+- BERHASIL:
+  - status: OK
+  - messages: berisi pesan
+- GAGAL:
+  - status: ERROR
+  - message: pesan kesalahan
+
+ADD GROUP
+* TUJUAN: untuk menambahkan grup baru dengan nama dan password tertentu
+* FORMAT: addgroup sessionid nama_group password
+* PARAMETER:
+  - sessionid : token autentikasi dari request AUTH
+  - nama_group : nama dari group yang akan dibuat
+  - password : password group untuk keamanan
+* RESULT:
+- BERHASIL:
+  - status: OK
+- GAGAL:
+  - status: ERROR
+  - message: pesan kesalahan
+  
+JOIN GROUP
+* TUJUAN: untuk bergabung ke grup yang sudah ada dengan nama dan password tertentu.
+* FORMAT: joingroup sessionid nama_group password
+* PARAMETER:
+  - sessionid: token autentikasi dari request AUTH
+  - nama_group: nama dari grup
+  - password: password grup
+* RESULT:
+- BERHASIL:
+  - status: OK
+- GAGAL:
+  - status: ERROR
+  - message: pesan kesalahan
+  
+GROUP CHAT
+* TUJUAN: untuk mengirim chat ke group
+* FORMAT: sendgroup sessionid nama_group message
+* PARAMETER:
+  - sessionid: token autentikasi dari request AUTH
+  - nama_group: nama group tujuan chat
+  - message: pesan yang dikirimkan
+* RESULT:
+- BERHASIL:
+  - status: OK
+- GAGAL:
+  - status: ERROR
+  - message: pesan kesalahan
+
+INBOX GROUP
+* TUJUAN: untuk mengambil pesan-pesan pribadi yang diterima dari group
+* FORMAT: inboxgroup sessionid nama_group
+* PARAMETER:
+  - sessionid: token autentikasi dari request AUTH
+  - nama_group: nama dari grup
+* RESULT:
+- BERHASIL:
+  - status: OK
+  - messages: berisi pesan
+- GAGAL:
+  - status: ERROR
+  - message: pesan kesalahan
+
+GROUP CHAT ANTAR REALM
+* TUJUAN: untuk menambahkan realm baru dengan ID, alamat, dan port tertentu
+* FORMAT: addrealm realm_id realm_address realm_port src_address src_port
+* RESULT:
+- BERHASIL:
+  - status: OK
+- GAGAL:
+  - status: ERROR
+  - message: pesan 
+  
+* TUJUAN: untuk mengirim pesan grup ke realm lain.
+* FORMAT: sendgrouprealm sessionid src_address src_port realm_id groupname message
+* RESULT:
+- BERHASIL:
+  - status: OK
+- GAGAL:
+  - status: ERROR
+  - message: pesan kesalahan
+
+* TUJUAN: untuk mengambil pesan-pesan yang diterima oleh grup di realm lain
+* FORMAT: inboxgrouprealm sessionid realm_id groupname
+* RESULT:
+- BERHASIL:
+  - status: 
+  - messages: berisi pesan
+- GAGAL:
+  - status: ERROR
+  - message: pesan 
+  
+PRIVATE CHAT ANTAR REALM
+* TUJUAN: untuk mengirim pesan pribadi ke pengguna di realm lain
+* FORMAT: sendrealm sessionid src_realm_addr src_realm_port realm_id username_from username_to message
+* RESULT:
+- BERHASIL:
+  - status: OK
+- GAGAL:
+  - status: ERROR
+  - message: pesan 
+
+* TUJUAN: untuk mengambil pesan-pesan pribadi yang diterima oleh pengguna di realm lain
+* FORMAT: inboxrealm sessionid realm_id
+* RESULT:
+- BERHASIL:
+  - status: 
+  - messages: berisi pesan
+- GAGAL:
+  - status: ERROR
+  - message: pesan 
