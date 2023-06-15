@@ -8,10 +8,10 @@ import logging
 class BackendList:
 	def __init__(self):
 		self.servers=[]
-		self.servers.append(('127.0.0.1',9002))
-		self.servers.append(('127.0.0.1',9003))
-		self.servers.append(('127.0.0.1',9004))
-		self.servers.append(('127.0.0.1',9005))
+		self.servers.append(('127.0.0.1',8002))
+		self.servers.append(('127.0.0.1',8003))
+		self.servers.append(('127.0.0.1',8004))
+		self.servers.append(('127.0.0.1',8005))
 		self.current=0
 	def getserver(self):
 		s = self.servers[self.current]
@@ -32,12 +32,14 @@ class Backend(asyncore.dispatcher_with_send):
 		try:
 			self.client_socket.send(self.recv(32))
 		except:
+			# print(e)
 			pass
 	def handle_close(self):
 		try:
 			self.close()
 			self.client_socket.close()
 		except:
+			# print(e)
 			pass
 
 
@@ -66,10 +68,12 @@ class Server(asyncore.dispatcher):
 			sock, addr = pair
 			logging.warning("connection from {}" . format(repr(addr)))
 
+			#menentukan ke server mana request akan diteruskan
 			bs = self.bservers.getserver()
 			logging.warning("koneksi dari {} diteruskan ke {}" . format(addr, bs))
 			backend = Backend(bs)
 
+			#mendapatkan handler dan socket dari client
 			handler = ProcessTheClient(sock)
 			handler.backend = backend
 

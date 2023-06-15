@@ -10,10 +10,10 @@ from http import HttpServer
 class BackendList:
 	def __init__(self):
 		self.servers=[]
-		self.servers.append(('127.0.0.1',9002))
-		self.servers.append(('127.0.0.1',9003))
-		self.servers.append(('127.0.0.1',9004))
-		self.servers.append(('127.0.0.1',9005))
+		self.servers.append(('127.0.0.1',8002))
+		self.servers.append(('127.0.0.1',8003))
+		self.servers.append(('127.0.0.1',8004))
+		self.servers.append(('127.0.0.1',8005))
 		self.current=0
 	def getserver(self):
 		s = self.servers[self.current]
@@ -74,10 +74,15 @@ def Server():
 				try:
 					backend_sock.connect(backend_address)
 
+					#logging.warning("connection from {}".format(client_address))
 					toupstream = executor.submit(ProcessTheClient, connection, client_address,backend_sock,'toupstream')
+					#the_clients.append(toupstream)
 					toclient = executor.submit(ProcessTheClient, connection, client_address,backend_sock,'toclient')
+					#the_clients.append(toclient)
 
+					#menampilkan jumlah process yang sedang aktif
 					jumlah = ['x' for i in the_clients if i.running()==True]
+					#print(jumlah)
 				except Exception as err:
 					logging.error(err)
 					pass
